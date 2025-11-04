@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClipCut‑style Portfolio • Saif Iqbal</title>
+  <meta name="description" content="Creative video editor & motion graphics portfolio" />
+  <style>
+    :root{
+      --bg:#0b0d12;           /* deep slate */
+      --bg-2:#0f1220;         /* panel dark */
+      --fg:#e8eefc;           /* text */
+      --muted:#9aa6c6;        /* secondary text */
+      --brand:#6ee7ff;        /* accent cyan */
+      --brand-2:#a78bfa;      /* accent violet */
+      --ok:#22c55e;           /* green */
+      --warn:#f59e0b;         /* amber */
+      --err:#ef4444;          /* red */
+      --card:#111827ee;       /* card bg */
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    /* Reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--fg); background:radial-gradient(1200px 1200px at 50% -200px, #1b1f34 0%, var(--bg) 45%);
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    img,video{max-width:100%; display:block}
+
+    /* NAV */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(10px); background:linear-gradient(180deg, rgba(15,18,32,.8), rgba(15,18,32,.4)); border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav-inner{max-width:1200px; margin:auto; display:flex; align-items:center; justify-content:space-between; padding:14px 20px}
+    .brand{display:flex; gap:12px; align-items:center}
+    .brand .logo{width:30px; height:30px; border-radius:10px; background:conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--brand)); box-shadow:0 0 30px rgba(174,230,255,.35)}
+    .brand h1{font-size:18px; margin:0; letter-spacing:.4px}
+    .nav a.btn{padding:10px 14px; border:1px solid rgba(255,255,255,.12); border-radius:12px}
+    .nav a.btn:hover{border-color:rgba(255,255,255,.22)}
+
+    /* HERO */
+    .hero{position:relative; min-height:86vh; display:grid; place-items:center; padding:110px 20px 60px}
+    .hero-inner{max-width:1200px; width:100%; display:grid; grid-template-columns:1.1fr .9fr; gap:28px}
+    @media (max-width:900px){.hero-inner{grid-template-columns:1fr}}
+    .kicker{font-size:14px; color:var(--muted); text-transform:uppercase; letter-spacing:.22em}
+    .title{font-size:clamp(36px,6vw,66px); line-height:1.05; margin:12px 0 10px; font-weight:800; letter-spacing:.2px}
+    .title .glow{background:linear-gradient(90deg, var(--brand), var(--brand-2)); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 0 35px rgba(110,231,255,.25)}
+    .lead{color:#c7d2fe; margin:10px 0 22px}
+    .cta{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{padding:14px 18px; border-radius:14px; background:linear-gradient(180deg, #1b2243, #10142b); border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow)}
+    .btn.primary{background:linear-gradient(180deg, #1f3a5b, #13233b); border-color:rgba(110,231,255,.35)}
+
+    .hero-card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:16px; box-shadow:var(--shadow)}
+    .reel{position:relative; border-radius:14px; overflow:hidden; background:#0c1022}
+    .reel video{aspect-ratio:16/9; width:100%; height:auto; opacity:.95}
+    .reel .badge{position:absolute; top:12px; left:12px; padding:6px 10px; border-radius:999px; font-size:12px; background:rgba(15,18,32,.75); border:1px solid rgba(255,255,255,.1)}
+
+    /* REACTIVE LIGHTS */
+    .lights{pointer-events:none; position:fixed; inset:0; z-index:-1; filter:blur(40px) saturate(130%); opacity:.9}
+    .lights::before, .lights::after{
+      content:""; position:absolute; width:50vmax; height:50vmax; border-radius:50%;
+      background:radial-gradient(closest-side, rgba(110,231,255,.35), rgba(110,231,255,0));
+      left:var(--lx,10%); top:var(--ly,10%);
+    }
+    .lights::after{
+      background:radial-gradient(closest-side, rgba(167,139,250,.28), rgba(167,139,250,0));
+      left:calc(var(--lx,10%) + 30%); top:calc(var(--ly,10%) + 25%);
+    }
+
+    /* MARQUEE */
+    .marquee{border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(15,18,32,.5), rgba(15,18,32,.2));
+      overflow:hidden; white-space:nowrap}
+    .marquee .row{display:flex; gap:36px; padding:14px 0; animation:scroll 22s linear infinite}
+    .marquee .tag{color:#b6c3eb; opacity:.9}
+    @keyframes scroll{to{transform:translateX(-50%)}}
+
+    /* SECTIONS */
+    section{padding:80px 20px}
+    .wrap{max-width:1200px; margin:auto}
+    .h2{font-size:clamp(26px,4.5vw,40px); margin:0 0 10px; letter-spacing:.2px}
+    .muted{color:var(--muted)}
+
+    /* SERVICES */
+    .grid{display:grid; grid-template-columns:repeat(12, 1fr); gap:16px}
+    .card{grid-column:span 4; background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .card h3{margin:6px 0 8px}
+    .card p{margin:0; color:#c9d3f1}
+    @media (max-width:900px){.card{grid-column:span 6}} 
+    @media (max-width:650px){.card{grid-column:span 12}}
+
+    /* WORK */
+    .work{display:grid; grid-template-columns:repeat(12, 1fr); gap:16px}
+    .tile{grid-column:span 6; position:relative; overflow:hidden; border-radius:18px; background:#0c1022; border:1px solid rgba(255,255,255,.06)}
+    .tile .meta{position:absolute; inset:auto 0 0 0; padding:12px 14px; background:linear-gradient(180deg, transparent, rgba(0,0,0,.55)); font-size:14px}
+    .tile:hover .zoom{transform:scale(1.05)}
+    .tile .zoom{transition:transform .7s cubic-bezier(.2,.65,.2,1)}
+    @media (max-width:900px){.tile{grid-column:span 12}}
+
+    /* TESTIMONIALS */
+    .quotes{display:grid; grid-template-columns:repeat(12, 1fr); gap:16px}
+    .quote{grid-column:span 6; background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px}
+    .quote p{margin:8px 0 0; color:#c9d3f1}
+    @media (max-width:900px){.quote{grid-column:span 12}}
+
+    /* CONTACT */
+    .contact{display:grid; grid-template-columns:7fr 5fr; gap:18px}
+    @media (max-width:900px){.contact{grid-template-columns:1fr}}
+    .panel{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px}
+    .row{display:flex; gap:12px}
+    input,textarea{width:100%; padding:14px 12px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background:#0c1126; color:var(--fg)}
+    textarea{min-height:130px; resize:vertical}
+    .send{cursor:pointer; width:100%}
+
+    /* REVEAL ANIMS */
+    .reveal{opacity:0; transform:translateY(24px); filter:saturate(.6)}
+    .reveal.on{opacity:1; transform:none; filter:none; transition:opacity .8s ease, transform .8s ease, filter .8s ease}
+
+    /* Spotlight cursor over hero title */
+    .spot{position:absolute; inset:-20% -20%; background:radial-gradient(200px 200px at var(--mx,50%) var(--my,50%), rgba(110,231,255,.18), transparent 60%), radial-gradient(300px 300px at calc(var(--mx,50%) + 120px) calc(var(--my,50%) + 80px), rgba(167,139,250,.14), transparent 60%); mix-blend-mode:screen; pointer-events:none; transition:opacity .3s ease}
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .marquee .row{animation:none}
+      .reveal{opacity:1; transform:none}
+      .tile .zoom{transition:none}
+      .spot{display:none}
+    }
+    footer{padding:40px 20px; color:#a7b1d3; border-top:1px solid rgba(255,255,255,.06); text-align:center}
+  </style>
+</head>
+<body>
+  <!-- reactive background lights -->
+  <div class="lights" aria-hidden="true"></div>
+
+  <!-- nav -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#home" aria-label="home">
+        <span class="logo"></span>
+        <h1>ClipCut • Saif</h1>
+      </a>
+      <div class="links">
+        <a class="btn" href="#work">Work</a>
+        <a class="btn" href="#services">Services</a>
+        <a class="btn" href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- hero -->
+  <header id="home" class="hero">
+    <div class="spot" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="kicker reveal">Creative video editor • Motion graphics</div>
+        <h2 class="title reveal">I turn raw footage into <span class="glow">scroll‑reactive stories</span> that keep viewers watching.</h2>
+        <p class="lead reveal">Premiere Pro, After Effects, 3D camera moves, kinetic type, sound design. Delivery for 9:16, 1:1, and 16:9.</p>
+        <div class="cta reveal">
+          <a class="btn primary" href="#work">View work</a>
+          <a class="btn" href="#contact">Get a quote</a>
+        </div>
+      </div>
+      <div class="hero-card reveal">
+        <div class="reel">
+          <span class="badge">Showreel 2025 · 00:37</span>
+          <video src="" poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1280' height='720'%3E%3Crect fill='%230c1022' width='100%25' height='100%25'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2387bff8' font-family='sans-serif' font-size='28'%3EDrop your MP4 here%3C/text%3E%3C/svg%3E" controls></video>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="row">
+      <span class="tag">After Effects</span>
+      <span class="tag">Premiere Pro</span>
+      <span class="tag">3D Camera</span>
+      <span class="tag">Kinetic Type</span>
+      <span class="tag">Motion Graphics</span>
+      <span class="tag">Sound Design</span>
+      <span class="tag">Color Grading</span>
+      <span class="tag">YouTube Shorts</span>
+      <span class="tag">Instagram Reels</span>
+      <span class="tag">Brand Ads</span>
+      <span class="tag">Podcast Clips</span>
+      <span class="tag">Corporate Edits</span>
+      <span class="tag">Documentary</span>
+      <span class="tag">Lyric Videos</span>
+      <!-- duplicate for seamless loop -->
+      <span class="tag">After Effects</span>
+      <span class="tag">Premiere Pro</span>
+      <span class="tag">3D Camera</span>
+      <span class="tag">Kinetic Type</span>
+      <span class="tag">Motion Graphics</span>
+      <span class="tag">Sound Design</span>
+      <span class="tag">Color Grading</span>
+      <span class="tag">YouTube Shorts</span>
+      <span class="tag">Instagram Reels</span>
+      <span class="tag">Brand Ads</span>
+      <span class="tag">Podcast Clips</span>
+      <span class="tag">Corporate Edits</span>
+      <span class="tag">Documentary</span>
+      <span class="tag">Lyric Videos</span>
+    </div>
+  </div>
+
+  <!-- services -->
+  <section id="services">
+    <div class="wrap">
+      <h3 class="h2 reveal">Services</h3>
+      <p class="muted reveal">Fast turnaround. Platform‑ready exports. Clean storytelling that converts.</p>
+      <div class="grid" style="margin-top:16px">
+        <div class="card reveal"><h3>Short‑form Reels</h3><p>Hook, pacing, captions, SFX, and trend mapping for 9:16.</p></div>
+        <div class="card reveal"><h3>YouTube Edits</h3><p>Cold open, chaptering, J‑cuts, motion graphics overlays.</p></div>
+        <div class="card reveal"><h3>Brand Ads</h3><p>Storyboard, product hero shots, typography, CTA alignment.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- work -->
+  <section id="work">
+    <div class="wrap">
+      <h3 class="h2 reveal">Selected work</h3>
+      <p class="muted reveal">Drop your thumbnails or MP4s into the tiles. Each opens in a lightbox.</p>
+      <div class="work" style="margin-top:16px">
+        <figure class="tile reveal">
+          <img class="zoom" src="https://images.unsplash.com/photo-1524253482453-3fed8d2fe12b?q=80&w=1600&auto=format&fit=crop" alt="Ad edit"/>
+          <figcaption class="meta">Ad edit · 0:29</figcaption>
+        </figure>
+        <figure class="tile reveal">
+          <img class="zoom" src="https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?q=80&w=1600&auto=format&fit=crop" alt="Reel pack"/>
+          <figcaption class="meta">Reel pack · 7 clips</figcaption>
+        </figure>
+        <figure class="tile reveal">
+          <img class="zoom" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=1600&auto=format&fit=crop" alt="Podcast clip"/>
+          <figcaption class="meta">Podcast clip · 1:02</figcaption>
+        </figure>
+        <figure class="tile reveal">
+          <img class="zoom" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600&auto=format&fit=crop" alt="Channel trailer"/>
+          <figcaption class="meta">Channel trailer · 0:48</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- testimonials -->
+  <section id="testimonials">
+    <div class="wrap">
+      <h3 class="h2 reveal">Client feedback</h3>
+      <div class="quotes" style="margin-top:16px">
+        <div class="quote reveal">
+          <strong>Kristoffer</strong>
+          <p>On‑brand motion graphics. Clear communication. Delivered ahead of schedule.</p>
+        </div>
+        <div class="quote reveal">
+          <strong>Ashley</strong>
+          <p>Took our raw recordings and built a story that kept retention high.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section id="contact">
+    <div class="wrap">
+      <h3 class="h2 reveal">Let’s work</h3>
+      <div class="contact" style="margin-top:16px">
+        <div class="panel reveal">
+          <h4>Why me</h4>
+          <ul>
+            <li>5+ years editing across ads, YouTube, and reels</li>
+            <li>After Effects templates and custom MOGRTs</li>
+            <li>Delivery in 9:16, 1:1, 4:5, and 16:9</li>
+            <li>Bangladesh time zone (GMT+6)</li>
+          </ul>
+        </div>
+        <div class="panel reveal">
+          <form onsubmit="event.preventDefault(); alert('Form submitted. Wire this to your backend or Formspree.');">
+            <div class="row">
+              <input placeholder="Your name" required>
+              <input placeholder="Email" type="email" required>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <input placeholder="Project type: ad, reel, YouTube…" required>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <textarea placeholder="Tell me about the deliverables, length, deadline"></textarea>
+            </div>
+            <div class="row" style="margin-top:12px">
+              <button class="btn primary send" type="submit">Send request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="y"></span> Saif Iqbal • ClipCut. Built with vanilla HTML/CSS/JS.
+  </footer>
+
+  <script>
+    // Year
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // Reveal on view
+    const io = new IntersectionObserver((ents)=>{
+      ents.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target)} })
+    }, {threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // Reactive lights follow scroll
+    const lights = document.querySelector('.lights');
+    const setLights = () => {
+      const y = window.scrollY;
+      const h = document.documentElement.scrollHeight - innerHeight;
+      const p = h ? y / h : 0;
+      const lx = 10 + p * 70;   // 10% -> 80%
+      const ly = 10 + p * 60;   // 10% -> 70%
+      lights.style.setProperty('--lx', lx+'%');
+      lights.style.setProperty('--ly', ly+'%');
+    };
+    setLights();
+    addEventListener('scroll', setLights, {passive:true});
+
+    // Spotlight follows mouse across hero
+    const hero = document.querySelector('.hero');
+    const spot = document.querySelector('.spot');
+    hero.addEventListener('pointermove', e=>{
+      const r = hero.getBoundingClientRect();
+      const x = (e.clientX - r.left)/r.width*100;
+      const y = (e.clientY - r.top)/r.height*100;
+      hero.style.setProperty('--mx', x+'%');
+      hero.style.setProperty('--my', y+'%');
+      spot.style.opacity = 1;
+    });
+    hero.addEventListener('pointerleave', ()=>{ spot.style.opacity = 0; });
+
+    // Lightbox for work tiles (simple)
+    const tiles = document.querySelectorAll('.tile img');
+    tiles.forEach(img=>img.addEventListener('click',()=>{
+      const src = img.getAttribute('src');
+      const box = document.createElement('div');
+      box.style.cssText = `position:fixed;inset:0;background:rgba(0,0,0,.8);display:grid;place-items:center;z-index:100`;
+      box.innerHTML = `<img src="${src}" style="max-width:90vw;max-height:80vh;border-radius:12px;box-shadow:0 20px 80px rgba(0,0,0,.6)" alt="preview">`;
+      box.addEventListener('click',()=>box.remove());
+      document.body.appendChild(box);
+    }));
+
+    // Keyboard reduce‑motion check for users toggling system setting at runtime
+    matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', e=>{
+      document.documentElement.style.scrollBehavior = e.matches ? 'auto' : 'smooth';
+    });
+  </script>
+</body>
+</html>
